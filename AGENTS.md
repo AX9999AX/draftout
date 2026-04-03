@@ -2,253 +2,186 @@
 
 ## Purpose
 
-This file defines working rules for agents contributing to this repository.
-The project uses:
+This repository is a frontend-only Next.js app focused on landing pages and marketing websites.
+The stack is:
 
 - Next.js 16 App Router
 - React 19
 - TypeScript
 - Tailwind CSS v4
+- Motion
 
-The main goal is to keep the codebase simple, fast, accessible, maintainable, and production-ready.
+The goal is to ship fast, polished, responsive, and SEO-friendly pages with clean UI code.
 
 ## Core Principles
 
-- Prefer clarity over cleverness.
-- Prefer server-first architecture.
-- Keep components small and focused.
-- Use framework defaults before introducing custom abstractions.
-- Avoid premature optimization and unnecessary indirection.
-- Preserve consistency across naming, layout, and data flow.
-- Every UI change should consider accessibility, responsive behavior, and loading states.
+- Treat this project as UI-first, not backend-driven.
+- Prefer simple, readable solutions over abstractions.
+- Build pages as reusable sections and small components.
+- Keep the codebase easy to extend for future landing pages.
+- Prioritize visual quality, responsiveness, accessibility, and SEO.
 
-## Project Architecture
+## Project Scope
 
-- Use the `app/` directory and App Router conventions as the default architecture.
-- Prefer route-local code when it is used only by one route segment.
-- Move shared logic into dedicated shared folders only after reuse becomes real.
-- Keep a clear separation between UI, data fetching, and domain logic.
-- Do not create deep folder nesting without a strong reason.
-- Prefer colocating related files near the route or component that owns them.
+- This app does not include backend or server business logic.
+- Do not introduce API layers, server actions, databases, or unnecessary data abstractions unless explicitly requested.
+- Keep implementation focused on page composition, content presentation, interactions, and performance.
 
-Recommended structure as the app grows:
+## Architecture
 
-- `app/` for routes, layouts, templates, loading, error, and server actions when route-scoped
-- `components/` for reusable UI components
-- `lib/` for pure utilities, API clients, formatters, schema helpers, and shared server logic
-- `styles/` only for truly global styles if they outgrow `app/globals.css`
-- `types/` for shared types only when colocated types are no longer sufficient
+- Use the `app/` directory and App Router conventions.
+- Keep routes simple and focused on page assembly.
+- Split UI into small presentational components instead of building large monolithic pages.
+- Prefer route-local components when a section belongs to only one page.
+- Move shared UI into `components/` only when reuse is real.
+- Keep utilities in `lib/` small, pure, and frontend-focused.
+- Avoid deep folder nesting.
+- Store downloaded static assets in `public/` and reference them locally in the app.
 
-## Next.js Best Practices
+Recommended structure:
 
-### Rendering Model
+- `app/` for routes, layouts, metadata, and route-local sections
+- `components/` for shared UI blocks and primitives
+- `lib/` for small helpers such as formatting, constants, and UI utilities
+- `public/` for images, icons, illustrations, and other downloaded static assets
 
-- Default to Server Components.
-- Use Client Components only when browser APIs, local interactivity, lifecycle hooks, or client state are required.
-- Do not add `"use client"` at high levels unless necessary; keep client boundaries as small as possible.
-- Fetch data on the server whenever possible.
-- Use streaming and route segment boundaries naturally instead of pushing everything to the client.
-- Use `loading.tsx` and `error.tsx` for route-level UX where appropriate.
-- Use `notFound()` for missing resources instead of custom fallback markup when the route is truly not found.
+## UI Composition Rules
 
-### Data Fetching
+- Break every landing page into clear sections such as hero, social proof, features, testimonials, FAQ, CTA, and footer.
+- Each meaningful section should be its own component when that improves readability.
+- Keep components small and single-purpose.
+- Prefer composition over large prop-heavy components.
+- If a component becomes hard to scan, split it.
+- Repeated UI patterns should become reusable components.
+- Keep text content easy to edit and easy to find.
 
-- Fetch data in Server Components, layouts, and server utilities by default.
-- Keep fetch logic close to where data is used unless it is shared.
-- Always handle failure states intentionally.
-- Be explicit about caching and revalidation behavior when it matters.
-- Avoid hidden fetches inside many nested components when a parent can load once and pass data down.
-- Prefer typed transformation of remote data before rendering it.
+## Next.js Rules
 
-### Server Actions and Mutations
+- Use App Router patterns consistently.
+- Default to static, simple pages unless interactivity is actually needed.
+- Use Client Components only for real browser-side interaction.
+- Keep `"use client"` boundaries as small as possible.
+- Keep `layout.tsx` lean and avoid putting page-specific UI there.
+- Define meaningful `metadata` for every public page.
 
-- Use Server Actions for straightforward form-driven mutations when they improve simplicity.
-- Validate all mutation input on the server.
-- Keep Server Actions focused; move reusable business logic into `lib/`.
-- Return predictable results for success and failure states.
-- Revalidate only the paths or tags that are actually affected.
+## SEO Rules
 
-### Metadata and SEO
+- Every page must have a clear title and meta description.
+- Use semantic HTML structure with proper headings.
+- Keep one clear `h1` per page.
+- Maintain logical heading order with `h2` and `h3` for sections.
+- Use descriptive link text and button text.
+- Add meaningful alt text for important images.
+- Prefer clean, content-first markup instead of div-heavy structures when semantic elements fit.
+- Build pages so important marketing content is present in the initial HTML.
 
-- Define meaningful `metadata` for every user-facing route.
-- Use route-level metadata instead of hardcoding document concerns inside components.
-- Ensure page titles and descriptions reflect actual content.
-- Use semantic headings and landmark elements.
+## Asset Rules
 
-### Images, Fonts, and Assets
+- Download external assets into `public/` instead of leaving temporary remote URLs in the codebase.
+- Never leave Figma CDN links or temporary image-hosting URLs in production code.
+- If assets come from Figma or another design handoff, download them into `public/` first and relink the UI to local files.
+- When implementing from Figma via MCP, do not rely only on the top-level selected frame or section.
+- For Figma/MCP implementations, inspect the relevant child nodes block by block so colors, spacing, radius, shadows, typography, and layout are taken from each specific node.
+- If MCP returns a sparse response for a parent frame or section, continue drilling into the nested nodes until the styles for each meaningful block are precise enough to reproduce the design faithfully.
+- Use clear folders inside `public/` when needed, such as `public/images/`, `public/icons/`, or `public/brand/`.
+- Reference local asset paths in components whenever possible.
+- Keep asset naming clear and consistent.
 
-- Use `next/image` for content images unless there is a strong reason not to.
-- Always provide descriptive `alt` text for meaningful images.
-- Prefer `next/font` over manual font loading.
-- Avoid large unoptimized images and oversized client bundles.
+## Styling Rules
 
-## React Best Practices
+- Use Tailwind utilities as the default styling approach.
+- Keep styling close to the component.
+- Prefer design tokens and CSS variables for colors, spacing, radius, shadows, and typography when values repeat.
+- Avoid scattered hardcoded values across many files.
+- Use consistent spacing and layout rhythm across sections.
+- Prefer `max-w-*`, `mx-auto`, `px-*`, `py-*`, `gap-*`, grid, and flex for layout.
+- Avoid long unreadable class strings; split markup or extract components when needed.
+- Do not add custom CSS when Tailwind utilities already solve the problem cleanly.
+- Use custom CSS only for global tokens, resets, or truly complex effects.
 
-- Build small, composable components with single responsibility.
-- Keep props explicit and well typed.
-- Derive UI from props and state rather than duplicating sources of truth.
-- Avoid unnecessary `useEffect`; if logic can run during render or on the server, do that instead.
-- Do not use `useMemo` or `useCallback` by default. Add them only when there is measured need or clear referential stability requirements.
-- Prefer controlled boundaries for client state and avoid lifting state higher than necessary.
-- Use forms and native HTML behavior before adding heavy client-side orchestration.
-- Keep event handlers simple; move complex logic into helper functions.
+## Landing Page Design Rules
 
-## TypeScript Rules
+- Design should feel intentional, polished, and conversion-focused.
+- Preserve strong visual hierarchy between headline, supporting copy, CTAs, and secondary content.
+- Make CTA blocks prominent and easy to understand.
+- Use spacing generously; do not let sections feel cramped.
+- Keep line lengths readable and layouts balanced.
+- Ensure mobile layouts feel designed, not just shrunken desktop versions.
+- Avoid accidental dark mode or inconsistent color usage unless the page is intentionally designed that way.
+- Reuse existing font variables and global tokens instead of inventing local font stacks.
 
-- Use strict typing and avoid `any`.
-- Prefer explicit domain types for important data structures.
-- Use inference where it keeps code readable, but add annotations at public boundaries.
-- Validate external data instead of trusting API responses blindly.
-- Keep utility types understandable; avoid type gymnastics that reduce maintainability.
-- Export types only when they are reused.
-- Prefer `Readonly` data patterns for props and immutable inputs where practical.
+## Motion Rules
 
-## Tailwind CSS v4 Rules
+- Use `motion` where it meaningfully improves UX and perceived quality.
+- Prefer subtle reveal, hover, enter, and scroll-based animations for landing page sections and key UI elements.
+- Motion should support hierarchy, focus, and feedback, not distract from content.
+- Keep animations smooth, fast, and intentional.
+- Avoid excessive motion, large chained animations, and decorative effects that hurt readability or performance.
+- Respect accessibility and reduce-motion preferences when adding animation-heavy UI.
+- Do not turn the whole page into a Client Component just to animate everything; keep motion boundaries small.
 
-- Use Tailwind utilities as the primary styling approach.
-- Keep styling close to the component unless it is truly global.
-- Prefer design tokens through CSS variables and Tailwind theme variables over hardcoded one-off values.
-- Reuse utility patterns by extracting components, not by creating long unreadable class strings everywhere.
-- Avoid overly large `className` blocks; split markup or extract small presentational components when needed.
-- Use semantic layout primitives consistently: stack, cluster, grid, sidebar, section.
-- Favor responsive design from the start.
-- Preserve sufficient color contrast and visible focus states.
-- Do not introduce custom CSS when Tailwind utilities already solve the problem cleanly.
-- Use custom CSS only for:
-  - global tokens
-  - resets
-  - complex visual effects not practical in utilities
-  - third-party styling overrides
+## Responsiveness Rules
 
-### Styling Conventions
-
-- Prefer spacing scales over arbitrary pixel values.
-- Prefer `max-w-*`, `mx-auto`, and consistent section paddings for page layout.
-- Prefer `gap-*` over ad hoc margins for repeated layout spacing.
-- Avoid magic numbers unless they are justified by a specific design requirement.
-- Keep dark mode behavior intentional; do not rely on accidental defaults.
-- Use the font variables already configured in `app/layout.tsx` and `app/globals.css`.
-- Do not reintroduce default system font stacks in components unless specifically required.
+- Build mobile-first or at least mobile-considerate from the start.
+- Check desktop, tablet, and mobile layouts for every major UI change.
+- Preserve content order and hierarchy across breakpoints.
+- Avoid fragile absolute positioning unless it is clearly necessary.
+- Make sure buttons, links, and form controls remain easy to tap on small screens.
 
 ## Accessibility Rules
 
 - Use semantic HTML first.
-- Every interactive element must be keyboard accessible.
-- Never remove focus indication without replacing it with an accessible alternative.
-- Provide accessible names for buttons, inputs, and landmark regions.
-- Use labels for form controls.
-- Use correct heading order.
-- Communicate validation errors clearly.
-- Do not rely on color alone to convey meaning.
-- Ensure hover-only interactions also work via keyboard and touch where relevant.
+- Keep all interactive elements keyboard accessible.
+- Preserve visible focus states.
+- Do not rely on color alone to communicate meaning.
+- Use accessible labels for inputs and buttons.
+- Ensure sufficient contrast for text and controls.
 
 ## Performance Rules
 
-- Keep Client Components minimal.
-- Avoid sending unnecessary JavaScript to the browser.
-- Lazy load heavy client-only UI when it improves user experience.
-- Avoid waterfall data fetching patterns when parent-level loading can prevent them.
-- Memoization is not a default optimization strategy; fix architecture first.
-- Watch bundle size when adding dependencies.
-- Prefer native platform features and framework capabilities over additional libraries.
+- Keep JavaScript light.
+- Avoid unnecessary client-side state and effects.
+- Prefer static content and simple interactions for landing pages.
+- Optimize images and avoid oversized assets.
+- Use motion selectively so animations do not harm loading, responsiveness, or scroll performance.
+- Do not add dependencies for small UI problems that can be solved locally.
 
-## State Management
+## TypeScript and React Rules
 
-- Prefer local state for local concerns.
-- Prefer URL state for filters, sorting, pagination, and shareable UI state.
-- Prefer server state fetched on the server rather than duplicating it in client stores.
-- Introduce global client state only when multiple distant client components truly need shared mutable state.
-- Do not add a state library unless the built-in React and Next.js model becomes insufficient.
-
-## Forms and Validation
-
-- Prefer native forms with progressive enhancement.
-- Validate on the server for every mutation.
-- Add client-side validation only to improve UX, not as the source of truth.
-- Surface pending, success, and error states clearly.
-- Keep form submission flows resilient to refresh and navigation.
-
-## Error Handling
-
-- Handle expected failures explicitly.
-- Do not swallow errors silently.
-- Show user-friendly fallback messages in the UI.
-- Keep internal error details out of user-facing messages.
-- Use route-level error boundaries when they improve resilience.
-
-## API and External Integrations
-
-- Centralize external API access patterns in `lib/` when reused.
-- Keep secrets on the server only.
-- Never expose server-only environment variables to the client.
-- Validate and normalize third-party data before rendering.
-- Add timeouts, retries, or fallback behavior where external reliability is uncertain.
+- Use strict typing and avoid `any`.
+- Keep props explicit and readable.
+- Build small React components with a single responsibility.
+- Avoid unnecessary `useEffect`.
+- Do not use `useMemo` or `useCallback` by default.
+- Derive UI from props and local state instead of duplicating state.
 
 ## Code Style
 
-- Use descriptive names.
-- Prefer early returns to reduce nesting.
-- Avoid large files when a clear split improves readability.
-- Keep functions focused and predictable.
-- Comment sparingly; explain why, not what.
-- Do not leave dead code, commented-out blocks, or debug logs in committed work.
-- Keep imports ordered and remove unused code.
-
-## Testing Expectations
-
-- Cover critical business logic and risky UI behavior with tests when test infrastructure exists.
-- Prefer testing user-visible behavior over implementation details.
-- Add regression coverage for bugs that are fixed.
-- If test infrastructure is missing, keep code testable and avoid tightly coupling logic to UI markup.
-
-## Dependency Rules
-
-- Add new dependencies only with clear justification.
-- Prefer mature, well-maintained libraries with focused scope.
-- Avoid dependencies for problems easily solved with platform APIs or small local utilities.
-- Before adding a package, consider bundle impact, maintenance cost, and whether Next.js already solves the problem.
-
-## Rules For Editing This Repository
-
-- Preserve the App Router approach.
-- Preserve TypeScript strictness.
-- Preserve ESLint compliance.
-- Respect the existing font variable setup with `Geist` and `Geist_Mono`.
-- Respect Tailwind v4 patterns used in `app/globals.css`.
-- When adding global design tokens, extend the existing CSS variable approach instead of scattering raw values across components.
-- Keep `layout.tsx` lean and avoid moving page-specific concerns into the root layout.
-
-## Preferred Implementation Decisions
-
-- For page composition, prefer server-rendered route components that delegate UI to small presentational pieces.
-- For repeated UI patterns, extract a reusable component only after the second or third real use.
-- For utility logic, prefer pure functions in `lib/`.
-- For class composition, keep it simple; if a helper is introduced, it must reduce repetition meaningfully.
-- For async work, keep the boundary obvious and error handling explicit.
+- Use clear, descriptive names.
+- Prefer early returns over deep nesting.
+- Remove dead code, commented-out code, and debug logs.
+- Keep imports clean and remove unused code.
+- Comment sparingly and only when it explains why.
 
 ## What To Avoid
 
-- Large monolithic Client Components
+- Large page files with all UI in one component
 - unnecessary `"use client"`
-- unnecessary global state
-- deeply nested prop drilling when composition solves it
-- styling with large custom CSS files for component-level concerns
-- hardcoded colors, spacing, and typography values scattered across files
-- weakly typed API responses
-- hidden side effects in components
-- adding libraries before using built-in Next.js and React capabilities
-- abstracting too early
+- backend-oriented abstractions
+- server actions and mutation flows unless explicitly needed
+- deeply nested folder structures
+- hardcoded styles repeated across the codebase
+- heavy dependencies for simple visual tasks
+- weak SEO structure
 
 ## Definition Of Done
 
-A change is considered complete when:
+A change is complete when:
 
-- the code follows server-first Next.js architecture where appropriate
-- client boundaries are minimal and justified
-- Tailwind classes remain readable and maintainable
+- the page is visually polished and responsive
+- the UI is split into clear, maintainable components
+- the code follows App Router structure cleanly
+- metadata and heading structure support SEO
 - accessibility basics are covered
-- loading, empty, and error states are considered where relevant
-- types are accurate at module boundaries
-- lint passes or any failure is explicitly explained
-- the implementation fits the existing structure of the repository
-
+- Tailwind usage remains readable
+- TypeScript stays strict and clean

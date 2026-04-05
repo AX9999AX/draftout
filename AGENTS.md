@@ -95,6 +95,7 @@ Recommended structure:
 - Avoid scattered hardcoded values across many files.
 - Use consistent spacing and layout rhythm across sections.
 - Prefer `max-w-*`, `mx-auto`, `px-*`, `py-*`, `gap-*`, grid, and flex for layout.
+- Use standard project containers for page layout, such as `mx-auto`, shared `max-w-*`, and responsive horizontal padding like `px-4 sm:px-6 lg:px-8`; avoid one-off large paddings such as `px-[340px]`.
 - Avoid long unreadable class strings; split markup or extract components when needed.
 - Do not add custom CSS when Tailwind utilities already solve the problem cleanly.
 - Use custom CSS only for global tokens, resets, or truly complex effects.

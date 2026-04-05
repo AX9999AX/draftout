@@ -1,6 +1,6 @@
 import Image from "next/image";
-import Link from "next/link";
 
+import { AnimatedLogo } from "./_components/animated-logo";
 import { FaqAccordion } from "./_components/faq-accordion";
 import { HeaderNav } from "./_components/header-nav";
 import { LandingCtaModal } from "./_components/landing-cta-modal";
@@ -19,7 +19,7 @@ const navItems = [
 ];
 
 const logoSrc = "/brand/draftout-logo.svg";
-const heroVisualSrc = "/figma/upscaled/hero-orb-2x.png";
+const heroVisualSrc = "/figma/upscaled/hero-orb-4x.png";
 const heroCardSrc = "/figma/6953afeeffc5cec3cf418261ebc79f9b0036e8b6.png";
 const headingArrowSrc = "/figma/bcfd4ac4a5ae48fde6900dc5a912e516db64ec53.svg";
 const trustShieldSrc = "/figma/a33abe492555f26fa6353a8390dc85e215688db7.svg";
@@ -358,20 +358,7 @@ export default function Home() {
     <main className="min-h-screen bg-[var(--page-bg)] pt-[72px]">
       <header className="fixed inset-x-0 top-0 z-50 border-b border-[var(--line)] bg-[rgba(244,244,242,0.88)] backdrop-blur-xl">
         <div className="mx-auto flex h-[72px] w-full max-w-[1240px] items-center justify-between px-4 sm:px-6 lg:px-0">
-          <Link
-            href="/"
-            className="inline-flex items-center"
-            aria-label="DraftOut home"
-          >
-            <Image
-              src={logoSrc}
-              alt="DraftOut"
-              width={150}
-              height={32}
-              className="h-8 w-auto"
-              priority
-            />
-          </Link>
+          <AnimatedLogo src={logoSrc} />
 
           <div className="flex items-center gap-4 sm:gap-5 lg:gap-[52px]">
             <HeaderNav items={navItems} loginHref="#login" loginOpensModal />
@@ -379,7 +366,7 @@ export default function Home() {
             <ParallaxButton
               href="#login"
               opensModal
-              className="hidden h-10 min-w-[108px] px-6 lg:inline-flex"
+              className="max-lg:hidden h-10 min-w-[108px] px-6"
             >
               Log In
             </ParallaxButton>
@@ -392,8 +379,8 @@ export default function Home() {
           <Image
             src={heroVisualSrc}
             alt=""
-            width={577}
-            height={549}
+            width={1672}
+            height={2252}
             className="h-auto w-[470px]"
             quality={100}
             sizes="470px"
@@ -837,16 +824,16 @@ export default function Home() {
         </Reveal>
       </section>
 
-      <section id="pricing" className="bg-[#e6e6e6] py-16 scroll-mt-24">
+      <section id="pricing" className="bg-[#e6e6e6] py-12 sm:py-16 scroll-mt-24">
         <Reveal className="mx-auto max-w-[1240px] px-4 sm:px-6 lg:px-0">
-          <h2 className="font-display text-[30px] font-bold leading-[36px] tracking-[-0.05em] text-[#313131]">
+          <h2 className="font-display text-[28px] font-bold leading-[34px] tracking-[-0.05em] text-[#313131] sm:text-[30px] sm:leading-[36px]">
             Choose your DraftOut plan
           </h2>
-          <p className="mt-[7px] max-w-[608px] text-[16px] leading-6 text-[#888888]">
+          <p className="mt-2 max-w-[608px] text-[15px] leading-6 text-[#888888] sm:mt-[7px] sm:text-[16px]">
             AI-free verification, source PDFs, and research memo are included in all DraftOut plans
           </p>
 
-          <div className="mt-10 grid gap-4 lg:grid-cols-3">
+          <div className="mt-8 grid gap-3 sm:mt-10 sm:gap-4 lg:grid-cols-3">
             {pricingPlans.map((plan) => (
               <PricingPlanShell
                 key={plan.name}
@@ -909,7 +896,7 @@ export default function Home() {
             ))}
           </div>
 
-          <div className="mt-6 flex min-h-[72px] items-center justify-center rounded-[16px] border-2 border-dashed border-[#34c759] px-4 text-center sm:px-6">
+          <div className="mt-4 flex min-h-[72px] items-center justify-center rounded-[16px] border-2 border-dashed border-[#34c759] px-4 text-center sm:mt-6 sm:px-6">
             <p className="font-display text-[16px] font-bold leading-5 text-[#313131]">
               30-day money-back guarantee from DraftOut
             </p>
@@ -1010,7 +997,8 @@ export default function Home() {
                   Need help? Contact us at{" "}
                   <a
                     href="mailto:help@draftout.ai"
-                    className="text-[#2270fd] underline decoration-solid underline-offset-[2px]"
+                    className="font-display text-[14px] leading-5 font-bold text-[#2270fd] underline decoration-solid underline-offset-[2px]"
+                    style={{ color: "#2270FD", textDecoration: "underline" }}
                   >
                     help@draftout.ai
                   </a>

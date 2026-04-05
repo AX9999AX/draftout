@@ -19,7 +19,7 @@ export function PricingPlanShell({
   if (!featured) {
     return (
       <div className="relative rounded-[24px] bg-[linear-gradient(180deg,rgba(113,128,150,0)_0%,rgba(113,128,150,0.2)_100%)]">
-        <div className="rounded-[24px] px-4 pb-4 pt-4 shadow-[-1px_-1px_0px_1px_rgba(255,255,255,1)]">
+        <div className="rounded-[24px] px-4 pb-4 pt-4 sm:px-5 sm:pb-5 sm:pt-5 shadow-[-1px_-1px_0px_1px_rgba(255,255,255,1)]">
           {children}
         </div>
       </div>
@@ -28,7 +28,7 @@ export function PricingPlanShell({
 
   return (
     <motion.article
-      className="relative -mt-6 rounded-[24px] bg-[rgba(180,220,255,0.78)] pt-0"
+      className="relative my-2 rounded-[24px] bg-[rgba(180,220,255,0.78)] pt-0 sm:-mt-6 sm:my-0"
       animate={
         prefersReducedMotion
           ? undefined
@@ -116,7 +116,7 @@ export function PricingPlanShell({
         }
       />
 
-      <div className="relative overflow-hidden rounded-b-[24px] px-4 pb-4 pt-4 shadow-[-1px_-1px_0px_1px_rgba(255,255,255,1)]">
+      <div className="relative overflow-hidden rounded-b-[24px] px-4 pb-5 pt-5 sm:px-5 sm:pb-5 sm:pt-5">
         {!prefersReducedMotion ? (
           <motion.div
             aria-hidden="true"
